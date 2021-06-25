@@ -1,0 +1,10 @@
+<ol>
+<li>Streamlit >>0.83.0</li>
+<li>Pandas >>1.2.4</li>
+<li>pandas_datareader >>0.90</li>
+<li>numpy >>1.19.5</li>
+<li>scikit-learn >>0.23.2</li>
+<li>matplotlib >>3.3.4</li>
+<li>datetime</li>
+<li>base64</li>
+</ol>
