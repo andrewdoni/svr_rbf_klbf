@@ -13,27 +13,31 @@ from sklearn.model_selection import train_test_split
 import matplotlib.dates as mdates
 import pandas as pd
 from pandas_datareader import data 
-import datetime
+from datetime import datetime, timedelta
 import streamlit as st  
 
 st.title (" PERAMALAN HARGA SAHAM MENGGUNAKAN METODE ALGORITMA SUPPORT VECTOR REGRESSION (SVR)")
 st.markdown("Studi Kasus : Saham PT. Kalbe Farma, TBK") 
 
 date1, date2 = st.beta_columns(2)
-start = date1.date_input('Start Date')
+date_def = "20150102"
+start = date1.date_input('Start Date', datetime.strptime(date_def,'%Y%m%d')) 
 end = date2.date_input('End Date')
+forecast_date = f'{end + timedelta(days=1)}'
 df = data.get_data_yahoo("KLBF.JK", start, end)
+st.write("Melakukan proses peramalan tanggal ",forecast_date)
 st.subheader("Data Harga Saham KLBF")
 st.write(df)
 
 #Download Data Optional
 import base64
+info1, info2, info3 = st.beta_columns(3)
 download_df = base64.b64encode(df.to_csv(index=False).encode()).decode()
-st.markdown(
+info1.markdown(
 	f'<a href="data:file/csv;base64,{download_df}" download="data.csv">Download Data</a>',
 	unsafe_allow_html=True
 		)
-
+info3.markdown('`  Sumber : Yahoo Finance  `')
 
 if st.checkbox("Tampilkan Diagram Pergerakan Saham"):
 	st.subheader("Diagram Pergerakan Saham")
@@ -51,9 +55,9 @@ def tranformasi_data(x_all, x_tr):
 x_all_tr = tranformasi_data(x_all, x_all)
 
 st.sidebar.title("Setting Parameter RBF")
-Cd = st.sidebar.selectbox("C", [1, 10, 100, 1000])
-gamma = st.sidebar.selectbox("Gamma", [0.1, 1, 10, 100])
-cross_validation = st.sidebar.selectbox("Cross Validation", [3, 5, 10])
+Cd = st.sidebar.selectbox("C", [1, 10, 100, 1000], index=3)
+gamma = st.sidebar.selectbox("Gamma", [0.1, 1, 10, 100], index=2)
+cross_validation = st.sidebar.selectbox("Cross Validation", [3, 5, 10],index=2)
 
 y_all=df_data.Close
 def model(x_all_tr, y_all):
@@ -86,7 +90,7 @@ def plot(y_pred, df_data):
     plt.xlabel('Date')
     plt.ylabel('Price')
     plt.title('Support Vector Regression')
-    plt.legend()
+    plt.legend(fontsize = '30')
     st.pyplot()
 st.set_option('deprecation.showPyplotGlobalUse', False)
 plot(y_pred, df_data)
@@ -141,4 +145,4 @@ y, m, d = prediksi_tanggal.split('-')
 c = [[y, m, d]]
 c_tr = tranformasi_data(x_all, c)
 hasil_prediksi = best_svr.predict(c_tr)
-st.write("Menurut hasil dari perhitungan Support Vector Regression (SVR) dengan kernel RBF berikut Parameter ** C = %d **,** Gamma = %d **dan **CV = %d** yang telah diinput didapatkan hasil harga saham pada tanggal **21 Mei 2021** sebesar ** %d ** Rupiah"%(Cd, gamma, cross_validation, hasil_prediksi))
+st.write("Menurut hasil dari perhitungan Support Vector Regression (SVR) dengan kernel RBF berikut Parameter ** C = %d **,** Gamma = %d **dan **CV = %d** yang telah diinput didapatkan hasil harga saham pada tanggal **%s** sebesar ** %d ** Rupiah"%(Cd, gamma, cross_validation, forecast_date, hasil_prediksi))
