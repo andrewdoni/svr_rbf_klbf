@@ -9,4 +9,5 @@ Python libraries:
 <li>matplotlib</li>
 <li>datetime</li>
 <li>base64</li>
+<li>heroku</li>
 </ol>
