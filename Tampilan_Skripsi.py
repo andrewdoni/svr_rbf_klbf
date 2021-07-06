@@ -14,6 +14,7 @@ import matplotlib.dates as mdates
 import pandas as pd
 from pandas_datareader import data 
 from datetime import datetime, timedelta
+import yfinance as yf
 import streamlit as st  
 
 st.title (" PERAMALAN HARGA SAHAM MENGGUNAKAN METODE ALGORITMA SUPPORT VECTOR REGRESSION (SVR)")
@@ -24,7 +25,7 @@ date_def = "20150102"
 start = date1.date_input('Start Date', datetime.strptime(date_def,'%Y%m%d')) 
 end = date2.date_input('End Date')
 forecast_date = f'{end + timedelta(days=1)}'
-df = data.get_data_yahoo("KLBF.JK", start, end)
+df = yf.download("KLBF.JK", start, end)
 st.write("Melakukan proses peramalan tanggal ",forecast_date)
 st.subheader("Data Harga Saham KLBF")
 st.write(df)
