@@ -5,8 +5,6 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-import sklearn.model_selection as model_selection
-from sklearn import metrics
 import matplotlib.dates as mdates
 import pandas as pd 
 from datetime import datetime, timedelta
