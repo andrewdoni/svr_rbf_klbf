@@ -1,5 +1,5 @@
 
-Streamlit >>0.83.0
+Streamlit >>0.84.0
 Pandas >>1.2.4
 pandas_datareader >>0.90
 numpy >>1.19.5
