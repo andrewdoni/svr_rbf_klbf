@@ -5,14 +5,10 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import KFold
 import sklearn.model_selection as model_selection
 from sklearn import metrics
-from sklearn.model_selection import train_test_split
 import matplotlib.dates as mdates
-import pandas as pd
-from pandas_datareader import data 
+import pandas as pd 
 from datetime import datetime, timedelta
 import yfinance as yf
 import streamlit as st  
