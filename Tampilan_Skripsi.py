@@ -24,8 +24,6 @@ st.write("Melakukan proses peramalan tanggal ",forecast_date)
 st.subheader("Data Harga Saham KLBF")
 st.write(df) #Index Date not download
 
-info3.markdown('`  Sumber : Yahoo Finance  `')
-
 if st.checkbox("Tampilkan Diagram Pergerakan Saham"):
 	st.subheader("Diagram Pergerakan Saham")
 	graph = st.line_chart(df["Close"])
@@ -50,6 +48,8 @@ info1.markdown(
 	f'<a href="data:file/csv;base64,{download_df}" download="data.csv">Download Data</a>',
 	unsafe_allow_html=True
 		)
+info3.markdown('`  Sumber : Yahoo Finance  `')
+
 #sidebar
 st.sidebar.title("Setting Parameter RBF")
 Cd = st.sidebar.selectbox("C", [1, 10, 100, 1000], index=3)
