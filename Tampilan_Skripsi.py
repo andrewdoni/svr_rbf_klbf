@@ -22,22 +22,15 @@ forecast_date = f'{end + timedelta(days=1)}'
 df = yf.download("KLBF.JK", start, end)
 st.write("Melakukan proses peramalan tanggal ",forecast_date)
 st.subheader("Data Harga Saham KLBF")
-st.write(df)
+st.write(df) #Index Date not download
 
-#Download Data Optional
-import base64
-info1, info2, info3 = st.beta_columns(3)
-download_df = base64.b64encode(df.to_csv(index=False).encode()).decode()
-info1.markdown(
-	f'<a href="data:file/csv;base64,{download_df}" download="data.csv">Download Data</a>',
-	unsafe_allow_html=True
-		)
 info3.markdown('`  Sumber : Yahoo Finance  `')
 
 if st.checkbox("Tampilkan Diagram Pergerakan Saham"):
 	st.subheader("Diagram Pergerakan Saham")
 	graph = st.line_chart(df["Close"])
-
+	
+#scaling
 df_data = df
 df_data.reset_index(inplace=True,drop=False)
 #st.write(df_data)	
@@ -49,11 +42,21 @@ def tranformasi_data(x_all, x_tr):
 	return x_all_tr
 x_all_tr = tranformasi_data(x_all, x_all)
 
+#Download Data Optional
+import base64
+info1, info2, info3 = st.beta_columns(3)
+download_df = base64.b64encode(df_data.to_csv(index=False).encode()).decode()
+info1.markdown(
+	f'<a href="data:file/csv;base64,{download_df}" download="data.csv">Download Data</a>',
+	unsafe_allow_html=True
+		)
+#sidebar
 st.sidebar.title("Setting Parameter RBF")
 Cd = st.sidebar.selectbox("C", [1, 10, 100, 1000], index=3)
 gamma = st.sidebar.selectbox("Gamma", [0.1, 1, 10, 100], index=2)
 cross_validation = st.sidebar.selectbox("Cross Validation", [3, 5, 10],index=2)
 
+#algorithm
 y_all=df_data.Close
 def model(x_all_tr, y_all):
     gcs = GridSearchCV(SVR(kernel='rbf'),
@@ -72,7 +75,7 @@ def model(x_all_tr, y_all):
     return y_pred, best_svr
 y_pred, best_svr = model(x_all_tr, y_all)
 
-
+#graph
 st.subheader("Grafik Perbandingan Harga Saham KLBF dan Perhitungan SVR")
 def plot(y_pred, df_data):
     fig, ax1 = plt.subplots(figsize=(25,15))
